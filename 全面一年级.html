@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体能闯关游戏 - 一年级专属版</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', '微软雅黑', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: linear-gradient(90deg, #ff6b6b, #ffcc00, #06d6a0, #4ecdc4, #118ab2);
+        }
+        
+        /* 标题样式 */
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 3em;
+            text-shadow: 3px 3px 0 #ffd166;
+            background: linear-gradient(45deg, #ff6b6b, #ff9e00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #118ab2;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        /* 登录表单样式 */
+        .login-form {
+            background: linear-gradient(135deg, #c7f9cc, #80ed99);
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            border: 5px solid #38b000;
+            box-shadow: 0 15px 30px rgba(56, 176, 0, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #073b4c;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 18px;
+            border: 4px solid #06d6a0;
+            border-radius: 15px;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff9e00;
+            box-shadow: 0 0 15px rgba(255, 158, 0, 0.5);
+        }
+        
+        /* 隐藏的表单元素 */
+        .hidden-field {
+            display: none;
+        }
+        
+        /* 标准显示 */
+        .standard-display {
+            background: #ffef9f;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 3px solid #ff9e00;
+            font-size: 1.1em;
+            display: none;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            width: 100%;
+            padding: 22px;
+            font-size: 1.4em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #06d6a0, #0a9396);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #118ab2, #073b4c);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ff9e00, #ee9b00);
+            color: white;
+        }
+        
+        /* 游戏主界面 */
+        #game-area {
+            display: none;
+        }
+        
+        .game-status {
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(135deg, #118ab2, #073b4c);
+            color: white;
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(17, 138, 178, 0.4);
+        }
+        
+        .status-box {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .status-value {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #ffd166;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            margin-top: 5px;
+        }
+        
+        /* 怪物区域 */
+        .monster-area {
+            background: linear-gradient(135deg, #ffd9e3, #ffb3c6);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 5px solid #ff8fab;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(255, 143, 171, 0.3);
+        }
+        
+        .monster-name {
+            font-size: 2.5em;
+            color: #ef476f;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 0 white;
+        }
+        
+        .monster-img {
+            font-size: 7em;
+            margin: 25px 0;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
+        }
+        
+        /* 数据展示 */
+        .data-display {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 25px;
+            border: 3px dashed #06d6a0;
+            font-size: 1.2em;
+        }
+        
+        /* 星星评分 */
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            gap: 15px;
+        }
+        
+        .star {
+            font-size: 4em;
+            color: #ddd;
+            transition: all 0.3s;
+        }
+        
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.2);
+            animation: starGlow 1s ease infinite alternate;
+        }
+        
+        @keyframes starGlow {
+            from { filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.2)); }
+            to { filter: drop-shadow(0 0 20px #ffd700); }
+        }
+        
+        .stars-count {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff9e00;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 4px solid #ff9e00;
+        }
+        
+        /* 评分标准显示 */
+        .criteria-display {
+            background: #e9f5ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 3px solid #118ab2;
+            font-size: 1em;
+            display: none;
+        }
+        
+        .criteria-title {
+            font-weight: bold;
+            color: #073b4c;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .criteria-item {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        
+        /* 结果区域 */
+        .result-area {
+            padding: 35px;
+            border-radius: 25px;
+            margin: 30px 0;
+            text-align: center;
+            font-size: 1.3em;
+            border: 5px solid;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(6, 214, 160, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+        }
+        
+        .result-perfect {
+            background: linear-gradient(135deg, #c7f9cc, #80ed99);
+            border-color: #38b000;
+        }
+        
+        .result-good {
+            background: linear-gradient(135deg, #a0e7e5, #4ecdc4);
+            border-color: #06d6a0;
+        }
+        
+        .result-ok {
+            background: linear-gradient(135deg, #ffd6a5, #ffc09f);
+            border-color: #ff9e00;
+        }
+        
+        .result-need-improve {
+            background: linear-gradient(135deg, #ffccd5, #ff8fab);
+            border-color: #ef476f;
+        }
+        
+        .result-title {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        /* 兑奖券 */
+        .coupon-area {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            border: 12px double #ef476f;
+            display: none;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(239, 71, 111, 0.3);
+        }
+        
+        /* 总结报告 */
+        .summary-area {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            border: 8px solid #ff9e00;
+            display: none;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(255, 158, 0, 0.3);
+        }
+        
+        .summary-title {
+            color: #ff9e00;
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .coupon-title {
+            color: #ef476f;
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .coupon-code {
+            font-family: 'Courier New', monospace;
+            font-size: 2.5em;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, #ffef9f, #ffd166);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 5px dashed #ff9e00;
+            font-weight: bold;
+        }
+        
+        /* 关卡总结 */
+        .level-summary {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .level-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 15px;
+            background: white;
+            border-left: 5px solid #118ab2;
+        }
+        
+        .level-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #073b4c;
+        }
+        
+        .level-stars {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff9e00;
+        }
+        
+        .improvement-tip {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+            text-align: left;
+            font-size: 1.1em;
+        }
+        
+        .tip-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        /* 动画 */
+        .bounce {
+            animation: bounce 0.6s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-25px); }
+            80% { transform: translateY(-15px); }
+        }
+        
+        .celebrate {
+            animation: celebrate 0.8s ease 3;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .monster-img {
+                font-size: 5em;
+            }
+            
+            .coupon-code {
+                font-size: 1.8em;
+                letter-spacing: 5px;
+                padding: 20px;
+            }
+            
+            .summary-title, .coupon-title {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏆 体能闯关游戏 - 一年级版 🏆</h1>
+        <p class="subtitle">输入你的姓名，开始闯关吧！</p>
+        
+        <!-- 登录表单 -->
+        <div id="login-form" class="login-form">
+            <div class="form-group">
+                <label>你的姓名</label>
+                <input type="text" id="student-name" placeholder="请输入你的姓名" maxlength="10">
+            </div>
+            
+            <!-- 标准显示 -->
+            <div id="standard-display" class="standard-display">
+                <p><strong>你的达标标准：</strong></p>
+                <p id="standard-text">正在加载你的数据...</p>
+            </div>
+            
+            <button class="btn btn-success" onclick="startGame()">
+                🚀 开始闯关！
+            </button>
+        </div>
+        
+        <!-- 游戏主界面 -->
+        <div id="game-area">
+            <div class="game-status">
+                <div class="status-box">
+                    <div>当前关卡</div>
+                    <div class="status-value" id="current-level">1</div>
+                </div>
+                <div class="status-box">
+                    <div>小勇士</div>
+                    <div class="status-value" id="player-name">-</div>
+                </div>
+                <div class="status-box">
+                    <div>累计星星</div>
+                    <div class="status-value" id="total-stars">0</div>
+                </div>
+            </div>
+            
+            <div class="monster-area">
+                <div class="monster-name" id="monster-name">森林小怪·跳绳兽</div>
+                <div class="monster-desc" id="monster-desc" style="font-size: 1.4em; margin-bottom: 20px; color: #555;">
+                    第一关：用你的跳绳数据击败它！根据成绩获得星星。
+                </div>
+                <div class="monster-img" id="monster-img">👾</div>
+                
+                <!-- 评分标准显示 -->
+                <div id="criteria-display" class="criteria-display">
+                    <div class="criteria-title">本关评分标准：</div>
+                    <div id="criteria-content"></div>
+                </div>
+                
+                <div class="data-display">
+                    <p style="font-size: 1.3em; margin-bottom: 15px;"><strong>📊 你的体能数据</strong></p>
+                    <p>姓名：<span id="disp-name" style="font-weight: bold;">-</span> 
+                       <span id="gender-display" style="padding: 5px 15px; border-radius: 15px; font-weight: bold;"></span>
+                    </p>
+                    <p style="margin-top: 15px;">
+                        跳绳: <span id="disp-rope" style="color: #118ab2; font-weight: bold;">-</span> 个 | 
+                        体前屈: <span id="disp-sit" style="color: #06d6a0; font-weight: bold;">-</span> cm | 
+                        50米跑: <span id="disp-run" style="color: #ef476f; font-weight: bold;">-</span> 秒
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 星星评分 -->
+            <div class="stars-container">
+                <div class="star" id="star-1">★</div>
+                <div class="star" id="star-2">★</div>
+                <div class="star" id="star-3">★</div>
+                <div class="stars-count" id="stars-count">0/3 颗星</div>
+            </div>
+            
+            <!-- 游戏按钮 -->
+            <button class="btn btn-primary" id="btn-attack" onclick="checkLevelPass()">
+                ⚔️ 开始闯关！
+            </button>
+            <button class="btn btn-success" id="btn-next" onclick="nextLevel()" style="display:none;">
+                ⏭️ 进入下一关
+            </button>
+            
+            <!-- 结果区域 -->
+            <div class="result-area" id="result-area">
+                <div class="result-title" id="result-title">闯关结果</div>
+                <div class="result-msg" id="result-msg"></div>
+                <div id="result-details" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+        
+        <!-- 总结报告（未获得9颗星） -->
+        <div id="summary-area" class="summary-area">
+            <div class="summary-title">📊 闯关总结报告</div>
+            <p style="font-size: 1.4em; color: #118ab2; font-weight: bold; margin: 20px 0;">
+                游戏结束！你获得了 <span id="summary-total-stars" style="color: #ff9e00; font-size: 1.5em;">0</span> 颗星星
+            </p>
+            <p style="font-size: 1.2em; margin-bottom: 25px;">
+                很遗憾，你还没有集齐9颗星星，无法获得兑奖码。<br>
+                下面是你的闯关详情和提升建议：
+            </p>
+            
+            <div class="level-summary">
+                <div class="level-item">
+                    <div class="level-name">第一关：跳绳</div>
+                    <div class="level-stars" id="summary-level-1">0颗星</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">第二关：坐位体前屈</div>
+                    <div class="level-stars" id="summary-level-2">0颗星</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">第三关：50米跑</div>
+                    <div class="level-stars" id="summary-level-3">0颗星</div>
+                </div>
+            </div>
+            
+            <div class="improvement-tip">
+                <div class="tip-title">💡 提升建议：</div>
+                <div id="improvement-tips"></div>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 25px 0;">
+                <p><strong>姓名：</strong><span id="summary-name">-</span></p>
+                <p><strong>性别：</strong><span id="summary-gender">-</span></p>
+                <p><strong>跳绳成绩：</strong><span id="summary-rope">-</span> 个</p>
+                <p><strong>体前屈成绩：</strong><span id="summary-sit">-</span> cm</p>
+                <p><strong>50米跑成绩：</strong><span id="summary-run">-</span> 秒</p>
+                <p><strong>距离兑奖码还差：</strong><span id="stars-needed" style="color: #ef476f; font-weight: bold;">9</span> 颗星星</p>
+            </div>
+            
+            <button class="btn btn-warning" onclick="window.print()">
+                🖨️ 打印总结报告
+            </button>
+            <button class="btn btn-primary" onclick="restartGame()" style="margin-top: 15px;">
+                🔄 重新开始
+            </button>
+        </div>
+        
+        <!-- 兑奖券（获得9颗星） -->
+        <div id="coupon-area" class="coupon-area">
+            <div class="coupon-title">🏅 体能小勇士兑奖券 🏅</div>
+            <p style="font-size: 1.4em; color: #06d6a0; font-weight: bold; margin: 20px 0;">
+                🎉 恭喜你三关全部完美通关！ 🎉
+            </p>
+            <p style="font-size: 1.2em; margin-bottom: 25px;">
+                你已成功击败所有怪兽，集齐9颗星星！<br>
+                请凭下方兑奖码到老师处兑换实体奖状！
+            </p>
+            <div class="coupon-code" id="coupon-code">PHY-2025-8888</div>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 25px 0;">
+                <p><strong>姓名：</strong><span id="cert-name">-</span></p>
+                <p><strong>性别：</strong><span id="cert-gender">-</span></p>
+                <p><strong>通关时间：</strong><span id="pass-time">-</span></p>
+                <p><strong>获得星星：</strong><span id="cert-stars">9颗星</span></p>
+            </div>
+            <button class="btn btn-warning" onclick="window.print()">
+                🖨️ 打印兑奖券
+            </button>
+            <button class="btn btn-primary" onclick="restartGame()" style="margin-top: 15px;">
+                🔄 重新开始
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ========== 一年级学生体能数据字典（新数据） ==========
+        const STUDENTS_DATABASE = {
+          // 5班学生数据
+          "油雨聪": { gender: "boy", rope: 66, sit: 19.8, run: 11.8 },
+          "王子荣": { gender: "boy", rope: 99, sit: 8.4, run: 11.7 },
+          "彭桓宇": { gender: "boy", rope: 75, sit: 14.3, run: 10.6 },
+          "曾美淇": { gender: "girl", rope: 82, sit: 13.5, run: 11.7 },
+          "陈笔言": { gender: "boy", rope: 83, sit: 12.2, run: 10.3 },
+          "尹瑞": { gender: "girl", rope: 87, sit: 15.8, run: 14.1 },
+          "肖伊澧": { gender: "girl", rope: 70, sit: 10.8, run: 11.4 },
+          "龙成": { gender: "boy", rope: 60, sit: 9.5, run: 10.6 },
+          "戴先一": { gender: "boy", rope: 44, sit: 1.0, run: 12.8 },
+          "马钰洁": { gender: "girl", rope: 0, sit: 12.8, run: 20.0 },
+          "谢锦晨": { gender: "boy", rope: 113, sit: 12.7, run: 11.2 },
+          "罗宇澄": { gender: "boy", rope: 86, sit: 15.1, run: 10.8 },
+          "陈诗颖": { gender: "girl", rope: 105, sit: 20.1, run: 11.8 },
+          "黄昀哲": { gender: "boy", rope: 85, sit: 5.1, run: 10.0 },
+          "张学文": { gender: "boy", rope: 77, sit: 4.6, run: 11.3 },
+          "宋梓阳": { gender: "boy", rope: 128, sit: 4.4, run: 10.9 },
+          "周铭宸": { gender: "boy", rope: 123, sit: 9.8, run: 10.3 },
+          "杨景宜": { gender: "girl", rope: 69, sit: 2.2, run: 11.7 },
+          "任芷妮": { gender: "girl", rope: 60, sit: 15.0, run: 11.8 },
+          "曾一涵": { gender: "boy", rope: 54, sit: 2.7, run: 11.6 },
+          "刘槿怡": { gender: "girl", rope: 106, sit: 20.0, run: 10.5 },
+          "吴泽辰": { gender: "boy", rope: 171, sit: 8.1, run: 11.3 },
+          "肖奕凤": { gender: "girl", rope: 141, sit: 13.5, run: 10.2 },
+          "鄢欣然": { gender: "girl", rope: 110, sit: 11.5, run: 11.5 },
+          "汤媛": { gender: "girl", rope: 92, sit: 8.0, run: 13.0 },
+          "彭诗言": { gender: "girl", rope: 117, sit: 13.5, run: 11.8 },
+          "梅浩阳": { gender: "boy", rope: 8, sit: 11.5, run: 13.1 },
+          "王舒潼": { gender: "girl", rope: 112, sit: 6.1, run: 11.1 },
+          "刘锦程": { gender: "boy", rope: 151, sit: 6.0, run: 10.9 },
+          "李欣睿": { gender: "girl", rope: 94, sit: 8.0, run: 13.9 },
+          "郑若妍": { gender: "girl", rope: 164, sit: 15.2, run: 12.4 },
+          "桂晨语": { gender: "girl", rope: 141, sit: 11.4, run: 12.5 },
+          "陈立果": { gender: "boy", rope: 108, sit: 16.5, run: 10.9 },
+          "贺思宇": { gender: "boy", rope: 158, sit: 18.2, run: 10.4 },
+          "周俊延": { gender: "boy", rope: 161, sit: 10.5, run: 10.3 },
+          "肖茂麒": { gender: "boy", rope: 80, sit: 9.9, run: 11.4 },
+          "吴韩辉": { gender: "boy", rope: 71, sit: 17.6, run: 11.4 },
+          "谢梓填": { gender: "boy", rope: 53, sit: 12.3, run: 10.7 },
+          "詹铠泽": { gender: "boy", rope: 150, sit: 11.2, run: 10.5 },
+          "林祺超": { gender: "boy", rope: 122, sit: 17.2, run: 9.7 },
+          "周思涵": { gender: "girl", rope: 100, sit: 20.8, run: 11.5 },
+          "姚芮诗": { gender: "girl", rope: 80, sit: 14.1, run: 11.3 },
+          
+          // 6班学生数据
+          "朱玮铂": { gender: "boy", rope: 108, sit: 7.0, run: 10.8 },
+          "朱佳妮": { gender: "girl", rope: 81, sit: 17.3, run: 11.4 },
+          "陈沐沐": { gender: "girl", rope: 18, sit: 16.0, run: 12.59 },
+          "刘霆劭": { gender: "boy", rope: 155, sit: 4.5, run: 10.0 },
+          "邹馨羽": { gender: "girl", rope: 100, sit: 14.6, run: 13.0 },
+          "陈鸿宇": { gender: "boy", rope: 124, sit: 4.6, run: 9.5 },
+          "王心然": { gender: "girl", rope: 112, sit: 7.0, run: 11.0 },
+          "方煜": { gender: "boy", rope: 131, sit: 6.0, run: 13.3 },
+          "胡严兮": { gender: "girl", rope: 63, sit: 20.4, run: 12.0 },
+          "杜浩然": { gender: "boy", rope: 164, sit: 10.5, run: 10.4 },
+          "何浩恩": { gender: "boy", rope: 89, sit: 5.4, run: 10.4 },
+          "王景冉": { gender: "boy", rope: 112, sit: 13.0, run: 10.0 },
+          "田铭哲": { gender: "boy", rope: 20, sit: 9.8, run: 11.6 },
+          "尹赞威": { gender: "boy", rope: 77, sit: 1.0, run: 11.3 },
+          "周沐礼": { gender: "boy", rope: 101, sit: 3.6, run: 11.2 },
+          "蒋紫希": { gender: "girl", rope: 39, sit: 14.8, run: 13.1 },
+          "潘圣元": { gender: "boy", rope: 61, sit: 6.5, run: 10.0 },
+          "彭一诺": { gender: "boy", rope: 45, sit: 5.2, run: 11.2 },
+          "黄垒尧": { gender: "boy", rope: 102, sit: 6.5, run: 10.8 },
+          "胡熙冉": { gender: "girl", rope: 67, sit: 18.6, run: 13.2 },
+          "曾景谦": { gender: "boy", rope: 112, sit: 4.0, run: 13.1 },
+          "孙昕悦": { gender: "girl", rope: 141, sit: 14.2, run: 11.7 },
+          "罗书熠": { gender: "boy", rope: 140, sit: 11.6, run: 12.0 },
+          "杨璟依": { gender: "girl", rope: 25, sit: 13.0, run: 13.5 },
+          "曾石珩": { gender: "boy", rope: 49, sit: -7.0, run: 10.7 },
+          "杨嘉溢": { gender: "boy", rope: 92, sit: 9.6, run: 11.6 },
+          "王承宇": { gender: "boy", rope: 100, sit: 14.3, run: 12.0 },
+          "刘语晴": { gender: "girl", rope: 100, sit: 9.0, run: 11.7 },
+          "谭敏姿": { gender: "girl", rope: 135, sit: 18.6, run: 11.5 },
+          "王米玥": { gender: "girl", rope: 105, sit: 19.6, run: 13.6 },
+          "赵胤翔": { gender: "boy", rope: 82, sit: 4.7, run: 11.5 },
+          "成雅婷": { gender: "girl", rope: 91, sit: 5.5, run: 13.1 },
+          "何雨萱": { gender: "girl", rope: 168, sit: 13.6, run: 10.9 },
+          "彭隽皓": { gender: "boy", rope: 143, sit: 7.0, run: 12.5 },
+          "周楚淇": { gender: "girl", rope: 85, sit: 16.1, run: 10.7 },
+          "万雅菲": { gender: "girl", rope: 101, sit: 8.4, run: 12.06 },
+          "唐子瀚": { gender: "boy", rope: 94, sit: 0.6, run: 11.63 },
+          "黄敏": { gender: "girl", rope: 107, sit: 13.0, run: 12.7 },
+          "袁子超": { gender: "boy", rope: 58, sit: 4.3, run: 13.4 },
+          "周裕上": { gender: "boy", rope: 63, sit: 12.6, run: 11.8 },
+          "杨景行": { gender: "boy", rope: 66, sit: 6.0, run: 10.0 },
+          "刘依澄": { gender: "girl", rope: 92, sit: 6.8, run: 10.8 },
+          
+          // 7班学生数据
+          "徐一安": { gender: "boy", rope: 140, sit: 14.5, run: 12.0 },
+          "柯菲娅": { gender: "girl", rope: 76, sit: 18.2, run: 11.4 },
+          "赵安然": { gender: "girl", rope: 84, sit: 4.0, run: 13.6 },
+          "陈婉晴": { gender: "girl", rope: 121, sit: 17.5, run: 11.9 },
+          "武家政": { gender: "boy", rope: 90, sit: 12.5, run: 10.1 },
+          "申景旭": { gender: "boy", rope: 64, sit: -1.4, run: 12.8 },
+          "杨一诺": { gender: "girl", rope: 155, sit: 23.1, run: 10.0 },
+          "肖子尧": { gender: "boy", rope: 157, sit: 9.4, run: 10.7 },
+          "卢晨煦": { gender: "boy", rope: 83, sit: 9.8, run: 10.4 },
+          "卢晨熙": { gender: "girl", rope: 165, sit: 20.0, run: 11.4 },
+          "唐一涵": { gender: "boy", rope: 1, sit: 2.0, run: 16.7 },
+          "向泓亦": { gender: "boy", rope: 138, sit: 6.5, run: 11.6 },
+          "阳煜宸": { gender: "boy", rope: 60, sit: 14.1, run: 12.8 },
+          "邓谨烽": { gender: "boy", rope: 55, sit: 11.1, run: 11.3 },
+          "王梓铭": { gender: "girl", rope: 164, sit: 16.2, run: 10.4 },
+          "贺晨": { gender: "boy", rope: 25, sit: 0.9, run: 12.1 },
+          "刘熹玥": { gender: "girl", rope: 139, sit: 18.1, run: 10.4 },
+          "徐雅萱": { gender: "girl", rope: 78, sit: 5.5, run: 13.2 },
+          "唐艾晨": { gender: "girl", rope: 112, sit: 15.6, run: 12.4 },
+          "谢睿承": { gender: "boy", rope: 108, sit: 7.0, run: 9.9 },
+          "潘梓琦": { gender: "boy", rope: 118, sit: 17.2, run: 11.0 },
+          "张婧彤": { gender: "girl", rope: 140, sit: 12.0, run: 12.9 },
+          "潘柚雯": { gender: "girl", rope: 132, sit: 9.4, run: 12.3 },
+          "艾景宸": { gender: "boy", rope: 101, sit: 6.5, run: 11.7 },
+          "陈梓睿": { gender: "boy", rope: 62, sit: 5.4, run: 10.8 },
+          "罗楚涵": { gender: "girl", rope: 135, sit: 16.0, run: 10.9 },
+          "蒋粒": { gender: "girl", rope: 146, sit: 19.2, run: 10.7 },
+          "余冠瑾": { gender: "boy", rope: 56, sit: 0.9, run: 10.8 },
+          "宋慕舟": { gender: "boy", rope: 123, sit: 10.1, run: 10.7 },
+          "方逸晨": { gender: "boy", rope: 147, sit: 11.9, run: 10.6 },
+          "李卿宇": { gender: "girl", rope: 112, sit: 9.1, run: 11.3 },
+          "胡雅琪": { gender: "girl", rope: 90, sit: 16.5, run: 11.6 },
+          "李子诺": { gender: "girl", rope: 167, sit: 16.0, run: 10.8 },
+          "张诗玥": { gender: "girl", rope: 125, sit: 14.0, run: 11.9 },
+          "王慕礼": { gender: "boy", rope: 31, sit: 13.0, run: 10.6 },
+          "袁家欣": { gender: "girl", rope: 80, sit: 11.5, run: 10.7 },
+          "谭景豪": { gender: "boy", rope: 119, sit: 17.1, run: 11.1 },
+          "梁铭宇": { gender: "boy", rope: 40, sit: 13.1, run: 11.5 },
+          "陈培霖": { gender: "boy", rope: 119, sit: 8.2, run: 10.7 },
+          "陈姿妤": { gender: "girl", rope: 132, sit: 9.0, run: 10.0 },
+          "黄玄坤昊": { gender: "boy", rope: 106, sit: 9.9, run: 11.5 },
+          "王梓溶": { gender: "girl", rope: 83, sit: 12.0, run: 12.4 },
+          
+          // 8班学生数据
+          "宋灼": { gender: "boy", rope: 117, sit: 19.2, run: 11.1 },
+          "李瑾瑜": { gender: "boy", rope: 34, sit: 16.3, run: 9.8 },
+          "瞿诗婕": { gender: "girl", rope: 116, sit: 7.6, run: 13.8 },
+          "刘兴翊": { gender: "boy", rope: 138, sit: 6.5, run: 10.6 },
+          "姚毅": { gender: "boy", rope: 106, sit: 18.1, run: 10.5 },
+          "黄鑫鹏": { gender: "boy", rope: 149, sit: 2.2, run: 11.7 },
+          "向承谦": { gender: "boy", rope: 150, sit: 18.1, run: 10.0 },
+          "周王梓": { gender: "boy", rope: 124, sit: 6.4, run: 10.1 },
+          "张澎": { gender: "girl", rope: 116, sit: 12.1, run: 10.7 },
+          "秦铭炬": { gender: "boy", rope: 111, sit: 7.7, run: 9.8 },
+          "熊靖雅": { gender: "girl", rope: 123, sit: 3.1, run: 11.0 },
+          "段灵均": { gender: "girl", rope: 85, sit: 15.3, run: 11.2 },
+          "李星睿": { gender: "boy", rope: 156, sit: 14.5, run: 10.4 },
+          "阳莹": { gender: "girl", rope: 100, sit: 19.7, run: 11.1 },
+          "吴若曦": { gender: "girl", rope: 77, sit: 13.6, run: 12.9 },
+          "李暄阳": { gender: "girl", rope: 117, sit: 15.1, run: 10.6 },
+          "吴艺璇": { gender: "girl", rope: 98, sit: 21.5, run: 13.1 },
+          "罗文泽": { gender: "boy", rope: 130, sit: 20.3, run: 10.2 },
+          "刘熙玥": { gender: "girl", rope: 155, sit: 17.0, run: 11.6 },
+          "谭奕涵": { gender: "girl", rope: 139, sit: 14.6, run: 10.2 },
+          "傅子睿": { gender: "boy", rope: 70, sit: 6.7, run: 10.6 },
+          "喻佳怡": { gender: "girl", rope: 32, sit: 19.0, run: 11.8 },
+          "张若汐": { gender: "girl", rope: 115, sit: 7.6, run: 12.3 },
+          "肖雅乐": { gender: "girl", rope: 105, sit: 19.0, run: 10.0 },
+          "陈昕月": { gender: "girl", rope: 90, sit: 22.2, run: 11.6 },
+          "肖昕悦": { gender: "girl", rope: 91, sit: 21.0, run: 11.2 },
+          "李翱亦": { gender: "boy", rope: 75, sit: 0.1, run: 13.5 },
+          "单澄苒": { gender: "girl", rope: 130, sit: 21.5, run: 11.6 },
+          "刘璟灏": { gender: "boy", rope: 84, sit: 13.6, run: 13.8 },
+          "朱彦丞": { gender: "boy", rope: 68, sit: 0.9, run: 11.1 },
+          "张溢荀": { gender: "boy", rope: 101, sit: 12.0, run: 10.6 },
+          "许景然": { gender: "boy", rope: 60, sit: 13.7, run: 13.5 },
+          "刘铭皓": { gender: "boy", rope: 25, sit: 8.2, run: 11.4 },
+          "肖云旗": { gender: "girl", rope: 112, sit: 16.1, run: 10.8 },
+          "毛梓嫣": { gender: "girl", rope: 158, sit: 20.4, run: 11.9 },
+          "尹周末": { gender: "boy", rope: 142, sit: 16.5, run: 10.4 },
+          "王紫萱": { gender: "girl", rope: 146, sit: 22.5, run: 10.0 },
+          "刘轩玮": { gender: "boy", rope: 82, sit: 8.0, run: 12.1 },
+          "刘轩豪": { gender: "boy", rope: 145, sit: 2.9, run: 10.8 },
+          "王世栩": { gender: "boy", rope: 68, sit: 8.0, run: 11.6 },
+          "韦嘉轩": { gender: "boy", rope: 58, sit: 12.0, run: 12.1 },
+          "凌宇泽": { gender: "boy", rope: 68, sit: 15.8, run: 10.8 }
+        };
+        
+        // 数据说明：
+        // - gender: "boy"表示男生，"girl"表示女生
+        // - rope: 跳绳成绩（个）
+        // - sit: 坐位体前屈成绩（厘米）
+        // - run: 50米跑成绩（秒）
+        // 共 168 名学生数据，按班级分组：5班(42人)，6班(42人)，7班(42人)，8班(42人)
+
+        // 游戏配置 - 每关独立评分标准
+        const LEVEL_STANDARDS = [
+            { // 第一关：跳绳
+                boy: [
+                    { min: 109, max: Infinity, stars: 3, desc: "109个以上", nextMin: 0, tip: "太棒了！保持这个水平！" },
+                    { min: 87, max: 108, stars: 2, desc: "87-108个", nextMin: 109, tip: "再加把劲，达到109个就能获得3颗星！" },
+                    { min: 17, max: 86, stars: 1, desc: "17-86个", nextMin: 87, tip: "每天多练习，争取达到87个获得2颗星！" },
+                    { min: 0, max: 16, stars: 0, desc: "16个以下", nextMin: 17, tip: "从基础开始练习，先争取达到17个获得1颗星！" }
+                ],
+                girl: [
+                    { min: 110, max: Infinity, stars: 3, desc: "110个以上", nextMin: 0, tip: "太棒了！保持这个水平！" },
+                    { min: 87, max: 109, stars: 2, desc: "87-109个", nextMin: 110, tip: "再加把劲，达到110个就能获得3颗星！" },
+                    { min: 17, max: 86, stars: 1, desc: "17-86个", nextMin: 87, tip: "每天多练习，争取达到87个获得2颗星！" },
+                    { min: 0, max: 16, stars: 0, desc: "16个以下", nextMin: 17, tip: "从基础开始练习，先争取达到17个获得1颗星！" }
+                ]
+            },
+            { // 第二关：坐位体前屈
+                boy: [
+                    { min: 16.1, max: Infinity, stars: 3, desc: "16.1cm以上", nextMin: 0, tip: "太棒了！柔韧性非常好！" },
+                    { min: 11.0, max: 16.0, stars: 2, desc: "11.0-16.0cm", nextMin: 16.1, tip: "每天拉伸，争取达到16.1cm获得3颗星！" },
+                    { min: 0, max: 10.9, stars: 1, desc: "0-10.9cm", nextMin: 11.0, tip: "坚持每天拉伸，争取达到11.0cm获得2颗星！" },
+                    { min: -Infinity, max: -0.1, stars: 0, desc: "负数", nextMin: 0, tip: "从基础拉伸开始，先争取达到0cm获得1颗星！" }
+                ],
+                girl: [
+                    { min: 18.6, max: Infinity, stars: 3, desc: "18.6cm以上", nextMin: 0, tip: "太棒了！柔韧性非常好！" },
+                    { min: 13.4, max: 18.5, stars: 2, desc: "13.4-18.5cm", nextMin: 18.6, tip: "每天拉伸，争取达到18.6cm获得3颗星！" },
+                    { min: 2.4, max: 13.3, stars: 1, desc: "2.4-13.3cm", nextMin: 13.4, tip: "坚持每天拉伸，争取达到13.4cm获得2颗星！" },
+                    { min: -Infinity, max: 2.3, stars: 0, desc: "2.3cm以下", nextMin: 2.4, tip: "从基础拉伸开始，先争取达到2.4cm获得1颗星！" }
+                ]
+            },
+            { // 第三关：50米跑
+                boy: [
+                    { min: -Infinity, max: 10.2, stars: 3, desc: "10.2秒以内", nextMin: 0, tip: "太棒了！速度很快！" },
+                    { min: 10.3, max: 10.6, stars: 2, desc: "10.3-10.6秒", nextMin: 10.2, tip: "再快一点，达到10.2秒以内就能获得3颗星！" },
+                    { min: 10.7, max: 12.6, stars: 1, desc: "10.7-12.6秒", nextMin: 10.6, tip: "加强短跑练习，争取达到10.6秒获得2颗星！" },
+                    { min: 12.7, max: Infinity, stars: 0, desc: "12.7秒以上", nextMin: 12.6, tip: "从基础跑步开始，先争取达到12.6秒获得1颗星！" }
+                ],
+                girl: [
+                    { min: -Infinity, max: 11.0, stars: 3, desc: "11.0秒以内", nextMin: 0, tip: "太棒了！速度很快！" },
+                    { min: 11.1, max: 11.8, stars: 2, desc: "11.1-11.8秒", nextMin: 11.0, tip: "再快一点，达到11.0秒以内就能获得3颗星！" },
+                    { min: 11.9, max: 13.8, stars: 1, desc: "11.9-13.8秒", nextMin: 11.8, tip: "加强短跑练习，争取达到11.8秒获得2颗星！" },
+                    { min: 13.9, max: Infinity, stars: 0, desc: "13.9秒以上", nextMin: 13.8, tip: "从基础跑步开始，先争取达到13.8秒获得1颗星！" }
+                ]
+            }
+        ];
+        
+        const LEVELS = [
+            { 
+                name: "森林小怪·跳绳兽", 
+                desc: "第一关：用你的跳绳数据击败它！根据成绩获得星星。",
+                emoji: "👾",
+                focus: "跳绳"
+            },
+            { 
+                name: "山洞守卫·柔韧怪", 
+                desc: "第二关：用你的体前屈数据破解它的防御！根据成绩获得星星。",
+                emoji: "🛡️",
+                focus: "体前屈"
+            },
+            { 
+                name: "终极Boss·闪电兽", 
+                desc: "第三关：用你的50米跑速度甩开它！根据成绩获得星星。",
+                emoji: "⚡",
+                focus: "50米跑"
+            }
+        ];
+        
+        // 游戏状态
+        let studentData = {
+            name: "",
+            gender: "",
+            rope: 0,
+            sit: 0,
+            run: 0
+        };
+        
+        let currentLevel = 0;
+        let levelStars = [0, 0, 0];
+        let totalStars = 0;
+        let currentLevelStandard = {}; // 保存当前关卡的评分标准信息
+        
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            // 姓名输入框事件 - 输入后自动匹配数据
+            document.getElementById('student-name').addEventListener('blur', function() {
+                const name = this.value.trim();
+                if (name && STUDENTS_DATABASE[name]) {
+                    loadStudentData(name);
+                }
+            });
+            
+            // 为姓名输入框添加回车键支持
+            document.getElementById('student-name').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    startGame();
+                }
+            });
+            
+            console.log('一年级体能闯关游戏已加载完成，共包含' + Object.keys(STUDENTS_DATABASE).length + '名学生数据');
+            
+            // 显示数据统计
+            const totalStudents = Object.keys(STUDENTS_DATABASE).length;
+            const boys = Object.values(STUDENTS_DATABASE).filter(s => s.gender === 'boy').length;
+            const girls = Object.values(STUDENTS_DATABASE).filter(s => s.gender === 'girl').length;
+            console.log(`男生: ${boys}人，女生: ${girls}人，总计: ${totalStudents}人`);
+        });
+        
+        // 根据姓名加载学生数据
+        function loadStudentData(name) {
+            const studentInfo = STUDENTS_DATABASE[name];
+            if (!studentInfo) return;
+            
+            // 填充学生数据
+            studentData.name = name;
+            studentData.gender = studentInfo.gender;
+            studentData.rope = studentInfo.rope;
+            studentData.sit = studentInfo.sit;
+            studentData.run = studentInfo.run;
+            
+            // 更新标准显示
+            updateStandardDisplay();
+            
+            // 显示提示
+            showToast(`✅ 已找到${name}的体能数据！`);
+        }
+        
+        // 更新标准显示
+        function updateStandardDisplay() {
+            if (!studentData.gender) return;
+            
+            const standardDisplay = document.getElementById('standard-display');
+            const standardText = document.getElementById('standard-text');
+            const genderText = studentData.gender === 'boy' ? '男生' : '女生';
+            
+            // 显示每关的评分标准
+            let standardsText = `<strong>${genderText}评分标准：</strong><br><br>`;
+            
+            // 第一关：跳绳
+            const ropeStandards = LEVEL_STANDARDS[0][studentData.gender];
+            standardsText += `<strong>第一关：跳绳</strong><br>`;
+            ropeStandards.forEach(std => {
+                if (std.stars > 0) {
+                    standardsText += `${std.desc} → ${std.stars}颗星<br>`;
+                }
+            });
+            
+            // 第二关：坐位体前屈
+            const sitStandards = LEVEL_STANDARDS[1][studentData.gender];
+            standardsText += `<br><strong>第二关：坐位体前屈</strong><br>`;
+            sitStandards.forEach(std => {
+                if (std.stars > 0) {
+                    standardsText += `${std.desc} → ${std.stars}颗星<br>`;
+                }
+            });
+            
+            // 第三关：50米跑
+            const runStandards = LEVEL_STANDARDS[2][studentData.gender];
+            standardsText += `<br><strong>第三关：50米跑</strong><br>`;
+            runStandards.forEach(std => {
+                if (std.stars > 0) {
+                    standardsText += `${std.desc} → ${std.stars}颗星<br>`;
+                }
+            });
+            
+            standardsText += `<br><strong>你的成绩：</strong><br>`;
+            standardsText += `跳绳: ${studentData.rope}个<br>`;
+            standardsText += `体前屈: ${studentData.sit}cm<br>`;
+            standardsText += `50米跑: ${studentData.run}秒`;
+            
+            standardText.innerHTML = standardsText;
+            standardDisplay.style.display = 'block';
+        }
+        
+        // 开始游戏
+        function startGame() {
+            // 获取学生姓名
+            const inputName = document.getElementById('student-name').value.trim();
+            
+            // 验证姓名
+            if (!inputName) {
+                showToast('请输入你的姓名');
+                document.getElementById('student-name').focus();
+                return;
+            }
+            
+            // 检查是否有该学生的数据
+            if (!STUDENTS_DATABASE[inputName]) {
+                showToast(`❌ 未找到${inputName}的体能数据，请确认姓名是否正确`);
+                document.getElementById('student-name').focus();
+                return;
+            }
+            
+            // 加载学生数据
+            loadStudentData(inputName);
+            
+            // 初始化游戏状态
+            currentLevel = 0;
+            levelStars = [0, 0, 0];
+            totalStars = 0;
+            
+            // 平滑切换界面
+            document.getElementById('login-form').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('game-area').style.display = 'block';
+                document.getElementById('game-area').style.opacity = '0';
+                document.getElementById('game-area').style.transition = 'opacity 0.5s';
+                document.getElementById('game-area').style.opacity = '1';
+                
+                // 更新显示
+                updateGameDisplay();
+                
+                // 显示欢迎信息
+                const genderText = studentData.gender === 'boy' ? '男生' : '女生';
+                showTemporaryMessage(
+                    "🎉 欢迎！", 
+                    `欢迎${studentData.name}小勇士！<br>你是${genderText}，开始你的闯关之旅吧！`, 
+                    "result-good"
+                );
+            }, 300);
+        }
+        
+        // 更新游戏显示
+        function updateGameDisplay() {
+            // 更新基本信息
+            document.getElementById('player-name').textContent = studentData.name;
+            document.getElementById('disp-name').textContent = studentData.name;
+            document.getElementById('disp-rope').textContent = studentData.rope;
+            document.getElementById('disp-sit').textContent = studentData.sit;
+            document.getElementById('disp-run').textContent = studentData.run;
+            document.getElementById('total-stars').textContent = totalStars;
+            
+            // 更新性别显示
+            const genderText = studentData.gender === 'boy' ? '男生' : '女生';
+            const genderColor = studentData.gender === 'boy' ? '#1565c0' : '#c2185b';
+            const genderBg = studentData.gender === 'boy' ? '#bbdefb' : '#f8bbd0';
+            
+            const genderDisplay = document.getElementById('gender-display');
+            genderDisplay.textContent = genderText;
+            genderDisplay.style.color = genderColor;
+            genderDisplay.style.backgroundColor = genderBg;
+            genderDisplay.style.border = `2px solid ${genderColor}`;
+            
+            // 更新关卡信息
+            document.getElementById('current-level').textContent = currentLevel + 1;
+            document.getElementById('monster-name').textContent = LEVELS[currentLevel].name;
+            document.getElementById('monster-desc').textContent = LEVELS[currentLevel].desc;
+            document.getElementById('monster-img').textContent = LEVELS[currentLevel].emoji;
+            
+            // 重置怪物动画类
+            document.getElementById('monster-img').classList.remove('celebrate', 'bounce');
+            
+            // 更新星星显示
+            updateStarsDisplay();
+            
+            // 显示本关评分标准
+            showCriteriaForCurrentLevel();
+        }
+        
+        // 显示当前关卡的评分标准
+        function showCriteriaForCurrentLevel() {
+            const criteriaDisplay = document.getElementById('criteria-display');
+            const criteriaContent = document.getElementById('criteria-content');
+            const gender = studentData.gender;
+            const standards = LEVEL_STANDARDS[currentLevel][gender];
+            const genderText = gender === 'boy' ? '男生' : '女生';
+            
+            let criteriaHtml = `<div class="criteria-item"><strong>${genderText}标准：</strong></div>`;
+            
+            standards.forEach(std => {
+                if (std.stars > 0) {
+                    criteriaHtml += `<div class="criteria-item">${std.desc} → ${std.stars}颗星</div>`;
+                }
+            });
+            
+            // 添加当前成绩信息
+            let currentValue;
+            let valueColor = "#118ab2";
+            
+            if (currentLevel === 0) { // 跳绳
+                currentValue = studentData.rope;
+            } else if (currentLevel === 1) { // 体前屈
+                currentValue = studentData.sit;
+                valueColor = "#06d6a0";
+            } else { // 50米跑
+                currentValue = studentData.run;
+                valueColor = "#ef476f";
+            }
+            
+            criteriaHtml += `<div class="criteria-item" style="margin-top: 10px; font-weight: bold; color: ${valueColor}">你的成绩：${currentValue}${currentLevel === 2 ? '秒' : (currentLevel === 1 ? 'cm' : '个')}</div>`;
+            
+            criteriaContent.innerHTML = criteriaHtml;
+            criteriaDisplay.style.display = 'block';
+        }
+        
+        // 更新星星显示
+        function updateStarsDisplay() {
+            const currentLevelStars = levelStars[currentLevel] || 0;
+            
+            // 更新星星图标
+            for (let i = 1; i <= 3; i++) {
+                const star = document.getElementById(`star-${i}`);
+                if (i <= currentLevelStars) {
+                    star.className = 'star active';
+                } else {
+                    star.className = 'star';
+                }
+            }
+            
+            // 更新星星计数
+            document.getElementById('stars-count').textContent = `${currentLevelStars}/3 颗星`;
+        }
+        
+        // 检查关卡是否通过
+        function checkLevelPass() {
+            const gender = studentData.gender;
+            const levelStandards = LEVEL_STANDARDS[currentLevel][gender];
+            
+            // 获取当前关卡对应的成绩
+            let currentValue;
+            if (currentLevel === 0) { // 跳绳
+                currentValue = studentData.rope;
+            } else if (currentLevel === 1) { // 体前屈
+                currentValue = studentData.sit;
+            } else { // 50米跑
+                currentValue = studentData.run;
+            }
+            
+            // 根据成绩查找对应的星星数
+            let starCount = 0;
+            let currentStandard = {};
+            
+            for (const std of levelStandards) {
+                if (currentValue >= std.min && currentValue <= std.max) {
+                    starCount = std.stars;
+                    currentStandard = std;
+                    break;
+                }
+            }
+            
+            // 保存当前关卡的评分标准信息
+            currentLevelStandard = currentStandard;
+            
+            // 更新当前关卡的星星数
+            levelStars[currentLevel] = starCount;
+            
+            // 更新总星星数
+            totalStars = levelStars.reduce((a, b) => a + b, 0);
+            
+            // 显示结果
+            showLevelResult(starCount, currentValue);
+            
+            // 更新显示
+            updateStarsDisplay();
+            document.getElementById('total-stars').textContent = totalStars;
+            
+            // 如果是第三关，检查是否可以获得兑奖码
+            if (currentLevel === 2) {
+                if (totalStars === 9) {
+                    // 获得9颗星，显示兑奖券
+                    setTimeout(() => {
+                        showCoupon();
+                    }, 2500);
+                } else {
+                    // 未获得9颗星，显示总结报告
+                    setTimeout(() => {
+                        showSummary();
+                    }, 2500);
+                }
+            }
+        }
+        
+        // 显示关卡结果
+        function showLevelResult(starCount, currentValue) {
+            const resultArea = document.getElementById('result-area');
+            const resultTitle = document.getElementById('result-title');
+            const resultMsg = document.getElementById('result-msg');
+            const resultDetails = document.getElementById('result-details');
+            const btnAttack = document.getElementById('btn-attack');
+            const btnNext = document.getElementById('btn-next');
+            
+            // 根据星星数设置结果样式
+            let resultClass, titleText, msgText;
+            
+            if (starCount === 3) {
+                resultClass = "result-perfect";
+                titleText = "🎉 完美通关！获得3颗星！";
+                msgText = "太棒了！你的成绩非常优秀！";
+            } else if (starCount === 2) {
+                resultClass = "result-good";
+                titleText = "👍 表现不错！获得2颗星！";
+                msgText = "很好！你的成绩很不错！";
+            } else if (starCount === 1) {
+                resultClass = "result-ok";
+                titleText = "💪 继续加油！获得1颗星";
+                msgText = "有进步空间，继续努力！";
+            } else {
+                resultClass = "result-need-improve";
+                titleText = "📝 需要努力！获得0颗星";
+                msgText = "这次没有获得星星，不要气馁，继续锻炼，下次一定更好！";
+            }
+            
+            // 构建详细信息
+            let details = `<div style="text-align:left; margin-top:15px;">`;
+            
+            // 获取当前关卡的项目名称
+            let projectName = "";
+            let unit = "";
+            if (currentLevel === 0) {
+                projectName = "跳绳";
+                unit = "个";
+            } else if (currentLevel === 1) {
+                projectName = "坐位体前屈";
+                unit = "cm";
+            } else {
+                projectName = "50米跑";
+                unit = "秒";
+            }
+            
+            details += `<p><strong>本关成绩：</strong>${currentValue}${unit}</p>`;
+            details += `<p><strong>获得星星：</strong>${starCount}颗星</p>`;
+            
+            // 显示提升建议
+            if (currentLevelStandard.tip && starCount < 3) {
+                details += `<p><strong>提升建议：</strong>${currentLevelStandard.tip}</p>`;
+            }
+            
+            details += `<p><strong>累计星星：</strong>${totalStars}颗星</p>`;
+            
+            // 如果是最后一关，显示额外信息
+            if (currentLevel === 2) {
+                if (totalStars === 9) {
+                    details += `<p style="color:#06d6a0; font-weight:bold; margin-top:15px;">🎊 恭喜！三关全部完美通关！正在生成兑奖码...</p>`;
+                } else {
+                    details += `<p style="color:#ff9e00; margin-top:15px;">游戏结束！正在生成总结报告...</p>`;
+                }
+            }
+            
+            details += `</div>`;
+            
+            // 更新结果区域
+            resultTitle.innerHTML = titleText;
+            resultMsg.innerHTML = msgText;
+            resultDetails.innerHTML = details;
+            resultArea.className = `result-area ${resultClass}`;
+            
+            // 平滑显示结果区域
+            resultArea.style.display = 'block';
+            resultArea.style.opacity = '0';
+            resultArea.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                resultArea.style.opacity = '1';
+            }, 100);
+            
+            // 按钮控制
+            if (currentLevel < 2) {
+                // 如果不是最后一关，显示"下一关"按钮
+                btnAttack.style.display = 'none';
+                btnNext.style.display = 'block';
+                
+                // 添加庆祝动画（如果获得3颗星）
+                if (starCount === 3) {
+                    document.getElementById('monster-img').classList.add('celebrate');
+                }
+            } else {
+                // 最后一关，隐藏闯关按钮
+                btnAttack.style.display = 'none';
+                btnNext.style.display = 'none';
+            }
+        }
+        
+        // 显示临时消息
+        function showTemporaryMessage(title, message, className) {
+            const resultArea = document.getElementById('result-area');
+            const resultTitle = document.getElementById('result-title');
+            const resultMsg = document.getElementById('result-msg');
+            const resultDetails = document.getElementById('result-details');
+            
+            resultTitle.innerHTML = title;
+            resultMsg.innerHTML = message;
+            resultDetails.innerHTML = '';
+            resultArea.className = `result-area ${className}`;
+            
+            // 平滑显示
+            resultArea.style.display = 'block';
+            resultArea.style.opacity = '0';
+            resultArea.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                resultArea.style.opacity = '1';
+            }, 100);
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                resultArea.style.opacity = '0';
+                setTimeout(() => {
+                    resultArea.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+        
+        // 显示提示消息（Toast）
+        function showToast(message) {
+            // 创建toast元素
+            let toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#ef476f';
+            toast.style.color = 'white';
+            toast.style.padding = '15px 25px';
+            toast.style.borderRadius = '10px';
+            toast.style.zIndex = '9999';
+            toast.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            toast.textContent = message;
+            
+            // 添加到页面
+            document.body.appendChild(toast);
+            
+            // 显示toast
+            setTimeout(() => {
+                toast.style.opacity = '1';
+            }, 10);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 进入下一关
+        function nextLevel() {
+            if (currentLevel >= 2) return;
+            
+            currentLevel++;
+            updateGameDisplay();
+            
+            // 切换按钮
+            document.getElementById('btn-attack').style.display = 'block';
+            document.getElementById('btn-next').style.display = 'none';
+            
+            // 隐藏结果区域
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.opacity = '0';
+            setTimeout(() => {
+                resultArea.style.display = 'none';
+            }, 500);
+            
+            // 添加关卡切换动画
+            document.getElementById('monster-img').classList.add('bounce');
+        }
+        
+        // 显示总结报告（未获得9颗星）
+        function showSummary() {
+            // 平滑隐藏游戏区域
+            document.getElementById('game-area').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('game-area').style.display = 'none';
+                const summaryArea = document.getElementById('summary-area');
+                
+                // 更新总结报告信息
+                const genderText = studentData.gender === 'boy' ? '男生' : '女生';
+                document.getElementById('summary-name').textContent = studentData.name;
+                document.getElementById('summary-gender').textContent = genderText;
+                document.getElementById('summary-rope').textContent = studentData.rope;
+                document.getElementById('summary-sit').textContent = studentData.sit;
+                document.getElementById('summary-run').textContent = studentData.run;
+                document.getElementById('summary-total-stars').textContent = totalStars;
+                document.getElementById('stars-needed').textContent = `${9 - totalStars} 颗星星`;
+                
+                // 更新每关的星星数
+                document.getElementById('summary-level-1').textContent = `${levelStars[0]}颗星`;
+                document.getElementById('summary-level-2').textContent = `${levelStars[1]}颗星`;
+                document.getElementById('summary-level-3').textContent = `${levelStars[2]}颗星`;
+                
+                // 生成提升建议
+                generateImprovementTips();
+                
+                // 显示总结报告
+                summaryArea.style.display = 'block';
+                summaryArea.style.opacity = '0';
+                summaryArea.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    summaryArea.style.opacity = '1';
+                }, 100);
+                
+                // 滚动到总结报告位置
+                summaryArea.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+        
+        // 生成提升建议
+        function generateImprovementTips() {
+            const tipsElement = document.getElementById('improvement-tips');
+            let tipsHtml = "";
+            const gender = studentData.gender;
+            
+            // 分析每关的成绩并提供具体建议
+            for (let i = 0; i < 3; i++) {
+                const levelStandards = LEVEL_STANDARDS[i][gender];
+                let currentValue;
+                
+                if (i === 0) currentValue = studentData.rope;
+                else if (i === 1) currentValue = studentData.sit;
+                else currentValue = studentData.run;
+                
+                // 查找当前成绩对应的标准
+                for (const std of levelStandards) {
+                    if (currentValue >= std.min && currentValue <= std.max) {
+                        if (std.stars < 3) {
+                            // 找到可以提升的建议
+                            let projectName = i === 0 ? "跳绳" : (i === 1 ? "坐位体前屈" : "50米跑");
+                            let unit = i === 0 ? "个" : (i === 1 ? "cm" : "秒");
+                            
+                            if (i === 2) { // 50米跑，数值越小越好
+                                if (std.nextMin > 0) {
+                                    tipsHtml += `<p><strong>${projectName}：</strong>你的成绩是${currentValue}${unit}，获得${std.stars}颗星。${std.tip}</p>`;
+                                }
+                            } else { // 跳绳和体前屈，数值越大越好
+                                if (std.nextMin > 0) {
+                                    tipsHtml += `<p><strong>${projectName}：</strong>你的成绩是${currentValue}${unit}，获得${std.stars}颗星。${std.tip}</p>`;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            // 如果所有项目都很好，显示鼓励信息
+            if (tipsHtml === "") {
+                tipsHtml = "<p>你的表现已经很不错了！继续保持！</p>";
+            } else {
+                // 添加总体建议
+                tipsHtml += `<p style="margin-top: 15px; font-weight: bold;">每天坚持锻炼，你一定可以取得更好的成绩！</p>`;
+            }
+            
+            tipsElement.innerHTML = tipsHtml;
+        }
+        
+        // 显示兑奖券
+        function showCoupon() {
+            // 平滑隐藏游戏区域
+            document.getElementById('game-area').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('game-area').style.display = 'none';
+                const couponArea = document.getElementById('coupon-area');
+                
+                // 生成唯一兑奖码
+                const timestamp = Date.now().toString().slice(-6);
+                const randomNum = Math.floor(1000 + Math.random() * 9000);
+                const couponCode = `PHY-${new Date().getFullYear()}-${randomNum}-${timestamp}`;
+                
+                // 更新兑奖券信息
+                const genderText = studentData.gender === 'boy' ? '男生' : '女生';
+                document.getElementById('cert-name').textContent = studentData.name;
+                document.getElementById('cert-gender').textContent = genderText;
+                document.getElementById('coupon-code').textContent = couponCode;
+                document.getElementById('pass-time').textContent = new Date().toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                document.getElementById('cert-stars').textContent = `${totalStars}颗星`;
+                
+                // 显示兑奖券
+                couponArea.style.display = 'block';
+                couponArea.style.opacity = '0';
+                couponArea.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    couponArea.style.opacity = '1';
+                }, 100);
+                
+                // 添加庆祝动画
+                couponArea.classList.add('celebrate');
+                setTimeout(() => {
+                    couponArea.classList.remove('celebrate');
+                }, 1500);
+                
+                // 滚动到兑奖券位置
+                couponArea.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+        
+        // 重新开始游戏（从登录开始）
+        function restartGame() {
+            if (confirm('确定要重新开始游戏吗？将返回登录页面。')) {
+                // 平滑隐藏当前区域
+                let currentArea = document.getElementById('summary-area').style.display === 'block' ? 
+                                 document.getElementById('summary-area') : 
+                                 document.getElementById('coupon-area');
+                
+                currentArea.style.opacity = '0';
+                setTimeout(() => {
+                    currentArea.style.display = 'none';
+                    document.getElementById('login-form').style.display = 'block';
+                    document.getElementById('login-form').style.opacity = '0';
+                    document.getElementById('login-form').style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        document.getElementById('login-form').style.opacity = '1';
+                        // 清空姓名输入框
+                        document.getElementById('student-name').value = '';
+                        // 隐藏标准显示
+                        document.getElementById('standard-display').style.display = 'none';
+                    }, 100);
+                }, 500);
+                
+                // 重置游戏状态
+                studentData = {
+                    name: "",
+                    gender: "",
+                    rope: 0,
+                    sit: 0,
+                    run: 0
+                };
+                
+                currentLevel = 0;
+                levelStars = [0, 0, 0];
+                totalStars = 0;
+            }
+        }
+    </script>
+</body>
+</html>
